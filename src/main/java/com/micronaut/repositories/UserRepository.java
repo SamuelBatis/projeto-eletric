@@ -32,7 +32,7 @@ public class UserRepository {
     }
   }
 
-  public Optional<User> findById(Long id)  throws SQLException{
+  public User findById(Long id)  throws SQLException{
     try (Connection conn = dataSource.getConnection()) {
       String sql = "SELECT * FROM Usuarios WHERE idUsuarios = ?";
       try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -44,13 +44,13 @@ public class UserRepository {
             user.setLogin(rs.getString("Login"));
             user.setSenha(rs.getString("Senha"));
             user.setAdmin(rs.getInt("Admin"));
-            return Optional.of(user);
+            return user;
           }
         }
       }
     }
 
-    return Optional.empty();
+    return null;
   }
 
   public List<User> findALl() {
@@ -70,7 +70,26 @@ public class UserRepository {
 
   }
 
-  public void updateUser(User user) {
+  public void updateInfos(User user) {
+    try (Connection conn = dataSource.getConnection()) {
+      PreparedStatement stmt = conn.prepareStatement("UPDATE Usuarios SET Login = ?, Senha = ?, Admin = ? WHERE idUsuarios = ?");
+      stmt.setString(1, user.getLogin());
+      stmt.setString(2, user.getSenha());
+      stmt.setInt(3, user.getAdmin());
+      stmt.setLong(4, user.getId());
+      stmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 
+  public void delete(Long id) {
+    try (Connection conn = dataSource.getConnection()) {
+      PreparedStatement stmt  = conn.prepareStatement("DELETE FROM Usuarios WHERE idUsuarios = ?");
+      stmt.setLong(1, id);
+      stmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 }

@@ -51,4 +51,17 @@ public class User {
   public void setAdmin(int admin) {
     this.admin = admin;
   }
+
+  public void atualizarInfos(User dados) {
+
+    if (dados.login != this.login) {
+      this.login = dados.getLogin();
+    }
+    if (dados.senha != this.senha) {
+      this.senha = dados.getSenha();
+    }
+    if (dados.admin != this.admin) {
+      this.admin = dados.getAdmin();
+    }
+  }
 }

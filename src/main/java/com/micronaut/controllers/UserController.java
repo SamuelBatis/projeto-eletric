@@ -4,10 +4,7 @@ import com.micronaut.etities.User;
 import com.micronaut.repositories.UserRepository;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
 
 import java.sql.Connection;
@@ -25,7 +22,7 @@ public class UserController {
   }
 
   @Get("/{id}")
-  public Optional<User> findById(Long id) throws SQLException {
+  public User findById(Long id) throws SQLException {
     System.out.println("Id " + id);
     var user = userRepository.findById(id);
     return user;
@@ -35,14 +32,25 @@ public class UserController {
   public List<User> findAll() {
     return userRepository.findALl();
   }
+
   @Post
   public HttpResponse<String> registerUser(@Body User user) {
     userRepository.save(user);
     return HttpResponse.created("Created");
   }
 
-//  public HttpResponse<String> updateUser(@Body User user) {
-//
-//  }
+  @Put
+  public HttpResponse<User> updateUser(@Body User dados) throws SQLException {
+    var user = userRepository.findById(dados.getId());
+    user.atualizarInfos(dados);
+    userRepository.updateInfos(user);
+    return HttpResponse.ok(user);
+  }
+
+  @Delete("/{id}")
+  public HttpResponse<String> deleteUser(Long id) {
+    userRepository.delete(id);
+    return HttpResponse.ok("Deleted");
+  }
 
 }
