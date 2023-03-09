@@ -1,12 +1,14 @@
 package com.micronaut.repositories;
 
 import com.micronaut.etities.User;
+import io.micronaut.context.annotation.Parameter;
 import jakarta.inject.Singleton;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 public class UserRepository {
@@ -30,6 +32,27 @@ public class UserRepository {
     }
   }
 
+  public Optional<User> findById(Long id)  throws SQLException{
+    try (Connection conn = dataSource.getConnection()) {
+      String sql = "SELECT * FROM Usuarios WHERE idUsuarios = ?";
+      try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setLong(1, id);
+        try (ResultSet rs = stmt.executeQuery()) {
+          if (rs.next()) {
+            User user = new User();
+            user.setId(rs.getLong("idUsuarios"));
+            user.setLogin(rs.getString("Login"));
+            user.setSenha(rs.getString("Senha"));
+            user.setAdmin(rs.getInt("Admin"));
+            return Optional.of(user);
+          }
+        }
+      }
+    }
+
+    return Optional.empty();
+  }
+
   public List<User> findALl() {
     List<User> users = new ArrayList<>();
     try (Connection conn = dataSource.getConnection()) {
@@ -45,6 +68,9 @@ public class UserRepository {
 
     return users;
 
-    
+  }
+
+  public void updateUser(User user) {
+
   }
 }

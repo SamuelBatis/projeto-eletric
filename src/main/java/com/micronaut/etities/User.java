@@ -7,13 +7,19 @@ public class User {
   private String senha;
   private int admin;
 
+  public User() {}
+
   public User(Long id, String login, String senha, int admin) {
     this.id = id;
     this.login = login;
     this.senha = senha;
     this.admin = admin;
   }
-
+  public User(String login, String senha, int admin) {
+    this.login = login;
+    this.senha = senha;
+    this.admin = admin;
+  }
 
   public Long getId() {
     return id;
