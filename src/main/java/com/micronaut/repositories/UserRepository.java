@@ -1,14 +1,12 @@
 package com.micronaut.repositories;
 
 import com.micronaut.etities.User;
-import io.micronaut.context.annotation.Parameter;
 import jakarta.inject.Singleton;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Singleton
 public class UserRepository {
@@ -91,5 +89,25 @@ public class UserRepository {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
+
+  public User findByLogin(String username) throws SQLException {
+    try (Connection conn = dataSource.getConnection()) {
+      String sql = "SELECT * FROM Usuarios WHERE Login = ?";
+      try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, username);
+        try (ResultSet rs = stmt.executeQuery()) {
+          if (rs.next()) {
+            User user = new User();
+            user.setId(rs.getLong("idUsuarios"));
+            user.setLogin(rs.getString("Login"));
+            user.setSenha(rs.getString("Senha"));
+            user.setAdmin(rs.getInt("Admin"));
+            return user;
+          }
+        }
+      }
+    }
+    return null;
   }
 }

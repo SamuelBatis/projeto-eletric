@@ -2,15 +2,12 @@ package com.micronaut.controllers;
 
 import com.micronaut.etities.User;
 import com.micronaut.repositories.UserRepository;
-import io.micronaut.context.annotation.Parameter;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
-import jakarta.inject.Inject;
 
-import java.sql.Connection;
+import javax.annotation.security.PermitAll;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller("/users")
 public class UserController {
@@ -29,6 +26,7 @@ public class UserController {
   }
 
   @Get
+  @PermitAll
   public List<User> findAll() {
     return userRepository.findALl();
   }
