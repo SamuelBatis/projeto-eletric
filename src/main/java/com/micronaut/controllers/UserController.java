@@ -4,6 +4,7 @@ import com.micronaut.etities.User;
 import com.micronaut.repositories.UserRepository;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
+import io.micronaut.security.annotation.Secured;
 
 import javax.annotation.security.PermitAll;
 import java.sql.SQLException;
@@ -26,12 +27,13 @@ public class UserController {
   }
 
   @Get
-  @PermitAll
+  @Secured("isAuthenticated()")
   public List<User> findAll() {
     return userRepository.findALl();
   }
 
   @Post
+  @Secured("isAuthenticated()")
   public HttpResponse<String> registerUser(@Body User user) {
     userRepository.save(user);
     return HttpResponse.created("Created");

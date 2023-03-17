@@ -12,6 +12,9 @@ micronaut:
           secret:
             generator:
               secret: ${JWT_GENERATOR_SIGNATURE_SECRET:ASLFKJ@#MDLOASIDP@OM#ASDLKJASLDKERMPCOASDLKJPKFD!@#ÇLKM$I!@#K}
+  server:
+    cors:
+      enabled: true
 netty:
   default:
     allocator:

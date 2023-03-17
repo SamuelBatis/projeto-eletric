@@ -27,7 +27,6 @@ public class UserPasswordAthenticationProvider implements AuthenticationProvider
     User user;
     try {
       user = userRepository.findByLogin(username);
-      System.out.println("entrou");
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
