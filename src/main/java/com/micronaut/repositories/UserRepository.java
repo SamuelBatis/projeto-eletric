@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
-public class UserRepository {
+public class   UserRepository {
 
   private final DataSource dataSource;
 

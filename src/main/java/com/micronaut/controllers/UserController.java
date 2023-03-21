@@ -20,6 +20,7 @@ public class UserController {
   }
 
   @Get("/{id}")
+  @Secured("isAuthenticated()")
   public User findById(Long id) throws SQLException {
     System.out.println("Id " + id);
     var user = userRepository.findById(id);
@@ -40,6 +41,7 @@ public class UserController {
   }
 
   @Put
+  @Secured("isAuthenticated()")
   public HttpResponse<User> updateUser(@Body User dados) throws SQLException {
     var user = userRepository.findById(dados.getId());
     user.atualizarInfos(dados);
@@ -48,6 +50,7 @@ public class UserController {
   }
 
   @Delete("/{id}")
+  @Secured("isAuthenticated()")
   public HttpResponse<String> deleteUser(Long id) {
     userRepository.delete(id);
     return HttpResponse.ok("Deleted");

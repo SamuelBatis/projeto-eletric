@@ -12,6 +12,16 @@ public class ContaLuz {
   private Long idUsuarios;
   private Date date;
 
+  public ContaLuz () {
+
+  }
+  public ContaLuz(Long idContaLuz, Float valor, Long idUsuarios, Date date) {
+    this.idContaLuz = idContaLuz;
+    this.valor = valor;
+    this.idUsuarios = idUsuarios;
+    this.date = date;
+  }
+
   public Long getIdContaLuz() {
     return idContaLuz;
   }
