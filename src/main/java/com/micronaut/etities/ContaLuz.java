@@ -53,4 +53,14 @@ public class ContaLuz {
   public void setDate(Date date) {
     this.date = date;
   }
+
+  public void atualizarInfos(ContaLuz contaLuz) {
+    if (contaLuz.getValor() != this.valor) {
+      this.valor = contaLuz.getValor();
+    }
+
+    if (contaLuz.getDate() != this.getDate()) {
+      this.date = contaLuz.getDate();
+    }
+  }
 }

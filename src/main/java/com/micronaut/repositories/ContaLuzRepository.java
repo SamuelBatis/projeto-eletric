@@ -70,12 +70,35 @@ public class ContaLuzRepository {
       ResultSet rs = stmt.executeQuery();
       if(rs.next()) {
         ContaLuz contaLuz = new ContaLuz();
+        contaLuz.setIdContaLuz( rs.getLong("idContaLuz"));
         contaLuz.setValor(rs.getFloat("valor"));
-        //contaLuz.setIdUsuarios(rs.getLong());
+        contaLuz.setIdUsuarios(rs.getLong("Usuarios_idUsuarios"));
+        contaLuz.setDate(rs.getDate("data"));
         return contaLuz;
       }
     }
     return null;
   }
 
+  public void updateInfos(ContaLuz conta) {
+    try (Connection conn = dataSource.getConnection()) {
+      PreparedStatement stmt = conn.prepareStatement("UPDATE ContaLuz SET valor = ?, data = ? WHERE idContaLuz = ?");
+      stmt.setFloat(1, conta.getValor());
+      stmt.setDate(2, conta.getDate());
+      stmt.setLong(3, conta.getIdContaLuz());
+      stmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void delete(Long id) {
+    try (Connection conn = dataSource.getConnection()) {
+      PreparedStatement stmt = conn.prepareStatement("DELETE FROM ContaLuz WHERE idContaLuz = ?;");
+      stmt.setLong(1, id);
+      stmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 }
