@@ -23,4 +23,5 @@ password: docker
 allowPublicKeyRetrieval: 'true'
 user: root
 dburl: jdbc:mysql://localhost:3306/mydb
-useSSL: 'false'
+
+

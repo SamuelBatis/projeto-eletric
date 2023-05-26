@@ -27,6 +27,14 @@ public class UserController {
     return user;
   }
 
+  @Get("/{login}")
+  @Secured("isAuthenticated()")
+  public User findByLogin(String login) throws SQLException {
+    var user = userRepository.findByLogin(login);
+
+    return user;
+  }
+
   @Get
   @Secured("isAuthenticated()")
   public List<User> findAll() {
