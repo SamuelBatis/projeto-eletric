@@ -13,7 +13,7 @@ import java.util.List;
 @Controller("/users")
 public class UserController {
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
   public UserController(UserRepository userRepository) {
     this.userRepository = userRepository;
@@ -29,7 +29,7 @@ public class UserController {
 
   @Get("/{login}")
   @Secured("isAuthenticated()")
-  public User findByLogin(String login) throws SQLException {
+  public User findByLogin(@PathVariable String login) throws SQLException {
     var user = userRepository.findByLogin(login);
 
     return user;
