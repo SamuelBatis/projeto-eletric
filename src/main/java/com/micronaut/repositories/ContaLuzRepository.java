@@ -5,6 +5,9 @@ import jakarta.inject.Singleton;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,24 +22,30 @@ public class ContaLuzRepository {
 
   public void save(ContaLuz contaDeLuz) {
     try (Connection conn = dataSource.getConnection()) {
-      PreparedStatement stmt = conn.prepareStatement("INSERT INTO ContaLuz ( valor, Usuarios_idUsuarios, data) VALUES (?, ?, ?);");
-      System.out.println("here " + contaDeLuz.getDate());
+      PreparedStatement stmt = conn.prepareStatement("INSERT INTO ContaLuz (valor, Usuarios_idUsuarios, data) VALUES (?, ?, ?);");
       stmt.setFloat(1, contaDeLuz.getValor());
       stmt.setLong(2, contaDeLuz.getIdUsuarios());
-      stmt.setDate(3, contaDeLuz.getDate());
+
+      // Convertendo a data de String para java.sql.Date
+      DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      java.util.Date date = dateFormat.parse(contaDeLuz.getData().toString());
+      java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+      stmt.setDate(3, sqlDate);
       stmt.executeUpdate();
-    } catch (SQLException e) {
+    } catch (SQLException | ParseException e) {
       e.printStackTrace();
     }
   }
 
-    public List<ContaLuz> findAll() {
+
+  public List<ContaLuz> findAll() {
       List<ContaLuz> contas = new ArrayList<>();
       try (Connection conn = dataSource.getConnection()) {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM ContaLuz");
         while (rs.next()) {
-          ContaLuz conta = new ContaLuz(rs.getLong("idContaLuz"), rs.getFloat("valor"), rs.getLong("Usuarios_idUsuarios"), rs.getDate("data"));
+          ContaLuz conta = new ContaLuz(rs.getLong("idContaLuz"), rs.getFloat("valor"), rs.getLong("Usuarios_idUsuarios"), rs.getString("data"));
           contas.add(conta);
         }
       } catch (SQLException e ) {
@@ -52,7 +61,7 @@ public class ContaLuzRepository {
       stmt.setLong(1, idUsuarios);
       ResultSet rs = stmt.executeQuery();
       while (rs.next()) {
-        ContaLuz conta = new ContaLuz(rs.getLong("idContaLuz"), rs.getFloat("valor"), rs.getLong("Usuarios_idUsuarios"), rs.getDate("data"));
+        ContaLuz conta = new ContaLuz(rs.getLong("idContaLuz"), rs.getFloat("valor"), rs.getLong("Usuarios_idUsuarios"), rs.getString("data"));
         contas.add(conta);
       }
 
@@ -73,7 +82,7 @@ public class ContaLuzRepository {
         contaLuz.setIdContaLuz( rs.getLong("idContaLuz"));
         contaLuz.setValor(rs.getFloat("valor"));
         contaLuz.setIdUsuarios(rs.getLong("Usuarios_idUsuarios"));
-        contaLuz.setDate(rs.getDate("data"));
+        contaLuz.setData(rs.getString("data"));
         return contaLuz;
       }
     }
@@ -84,7 +93,7 @@ public class ContaLuzRepository {
     try (Connection conn = dataSource.getConnection()) {
       PreparedStatement stmt = conn.prepareStatement("UPDATE ContaLuz SET valor = ?, data = ? WHERE idContaLuz = ?");
       stmt.setFloat(1, conta.getValor());
-      stmt.setDate(2, conta.getDate());
+      stmt.setString(2, conta.getData());
       stmt.setLong(3, conta.getIdContaLuz());
       stmt.executeUpdate();
     } catch (SQLException e) {

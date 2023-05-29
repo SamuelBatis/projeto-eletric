@@ -10,16 +10,25 @@ public class ContaLuz {
   private Long idContaLuz;
   private Float valor;
   private Long idUsuarios;
-  private Date date;
+  private String data;
+
+  public String getData() {
+    return data;
+  }
+
+  public void setData(String data) {
+    this.data = data;
+  }
+
 
   public ContaLuz () {
 
   }
-  public ContaLuz(Long idContaLuz, Float valor, Long idUsuarios, Date date) {
+  public ContaLuz(Long idContaLuz, Float valor, Long idUsuarios, String date) {
     this.idContaLuz = idContaLuz;
     this.valor = valor;
     this.idUsuarios = idUsuarios;
-    this.date = date;
+    this.data = date;
   }
 
   public Long getIdContaLuz() {
@@ -46,21 +55,21 @@ public class ContaLuz {
     this.idUsuarios = idUsuarios;
   }
 
-  public Date getDate() {
-    return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
-  }
+//  public Date getDate() {
+//    return date;
+//  }
+//
+//  public void setDate(String date) {
+//    this.date = date;
+//  }
 
   public void atualizarInfos(ContaLuz contaLuz) {
     if (contaLuz.getValor() != this.valor) {
       this.valor = contaLuz.getValor();
     }
 
-    if (contaLuz.getDate() != this.getDate()) {
-      this.date = contaLuz.getDate();
+    if (contaLuz.getData() != this.getData()) {
+      this.data = contaLuz.getData();
     }
   }
 }

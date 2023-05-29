@@ -45,6 +45,18 @@ public class MaquinasController {
     return HttpResponse.ok(maquinas);
   }
 
+  @Delete("/{id}")
+  @Secured("isAuthenticated()")
+  public HttpResponse<Void> delete(@PathVariable Long id) {
+    var maquina = repository.findById(id);
+    if (maquina != null) {
+      repository.delete(id);
+      return HttpResponse.noContent();
+    } else {
+      return HttpResponse.notFound();
+    }
+  }
+
 //  @Put
 //  @Secured("isAuthenticated()")
 //  public HttpResponse update() {

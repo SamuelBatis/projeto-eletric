@@ -7,16 +7,30 @@ public class Maquina {
   private Double tempoDeUso;
   private Double custoTotal;
   private Long idUsuarios;
+  private Long idDepartamento;
 
-  public Maquina(Long idMaquinas, String nome, Double power, Double tempoDeUso, Double custoTotal, Long idUsuarios) {
+  public Long getIdDepartamento() {
+    return idDepartamento;
+  }
+
+  public void setIdDepartamento(Long idDepartamento) {
+    this.idDepartamento = idDepartamento;
+  }
+
+  public Maquina(Long idMaquinas, String nome, Double power, Double tempoDeUso, Double custoTotal, Long idUsuarios, Long idDepartamento) {
     this.idMaquinas = idMaquinas;
     this.nome = nome;
     this.power = power;
     this.tempoDeUso = tempoDeUso;
     this.custoTotal = custoTotal;
     this.idUsuarios = idUsuarios;
+    this.idDepartamento = idDepartamento;
   }
 
+
+
+
+  public Maquina(){}
   public Long getIdMaquinas() {
     return idMaquinas;
   }

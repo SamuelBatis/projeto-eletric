@@ -10,7 +10,7 @@ import jakarta.inject.Inject;
 import java.sql.SQLException;
 import java.util.List;
 
-@Controller("/conta-luz")
+@Controller("/simulacao")
 public class SimulacaoController {
 
   @Inject

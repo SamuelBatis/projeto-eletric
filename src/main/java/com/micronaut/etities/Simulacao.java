@@ -8,21 +8,44 @@ import java.sql.Date;
 public class Simulacao {
 
   private Long idSimulacao;
+
+  private String nome;
+
+  public String getNome() {
+    return nome;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
   private Float valor;
-  private Date date;
+  private String date;
   private Long idUsuarios;
+
+  private Double tempoDeUso;
+
+  public Double getTempoDeUso() {
+    return tempoDeUso;
+  }
+
+  public void setTempoDeUso(Double tempoDeUso) {
+    this.tempoDeUso = tempoDeUso;
+  }
 
   public Simulacao () {
 
   }
-  public Simulacao(Long idSimulacao, Float valor, Long idUsuarios, Date date) {
+  public Simulacao(Long idSimulacao, Float valor, Long idUsuarios, String date, Double tempoDeUso, String nome ) {
     this.idSimulacao = idSimulacao;
     this.valor = valor;
     this.idUsuarios = idUsuarios;
     this.date = date;
+    this.tempoDeUso = tempoDeUso;
+    this.nome = nome;
   }
   
-  public Simulacao(Float valor, Long idUsuarios, Date date) {
+  public Simulacao(Float valor, Long idUsuarios, String date) {
 	    this.valor = valor;
 	    this.idUsuarios = idUsuarios;
 	    this.date = date;
@@ -51,11 +74,11 @@ public class Simulacao {
     this.idUsuarios = idUsuarios;
   }
 
-  public Date getDate() {
+  public String getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(String date) {
     this.date = date;
   }
 

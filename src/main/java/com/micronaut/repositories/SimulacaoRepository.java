@@ -19,11 +19,13 @@ public class SimulacaoRepository {
 
   public void save(Simulacao simulacao) {
     try (Connection conn = dataSource.getConnection()) {
-      PreparedStatement stmt = conn.prepareStatement("INSERT INTO Simulacao ( valor, Usuarios_idUsuarios, data) VALUES (?, ?, ?);");
+      PreparedStatement stmt = conn.prepareStatement("INSERT INTO Simulacao ( valor, Usuarios_idUsuarios, date, tempoDeUso, nome) VALUES (?, ?, ?, ?, ?);");
       System.out.println("here " + simulacao.getDate());
       stmt.setFloat(1, simulacao.getValor());
       stmt.setLong(2, simulacao.getIdUsuarios());
-      stmt.setDate(3, simulacao.getDate());
+      stmt.setString(3, simulacao.getDate());
+      stmt.setDouble(4, simulacao.getTempoDeUso());
+      stmt.setString(5, simulacao.getNome());
       stmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -36,7 +38,7 @@ public class SimulacaoRepository {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Simulacao");
         while (rs.next()) {
-        	Simulacao simulacao = new Simulacao(rs.getLong("idSimulacao"), rs.getFloat("valor"), rs.getLong("Usuarios_idUsuarios"), rs.getDate("data"));
+        	Simulacao simulacao = new Simulacao(rs.getLong("idSimulacao"), rs.getFloat("valor"), rs.getLong("Usuarios_idUsuarios"), rs.getString("date"), rs.getDouble("tempoDeUso"), rs.getString(("nome")));
         	Simulacoes.add(simulacao);
         }
       } catch (SQLException e ) {
@@ -52,7 +54,7 @@ public class SimulacaoRepository {
       stmt.setLong(1, idUsuarios);
       ResultSet rs = stmt.executeQuery();
       while (rs.next()) {
-        Simulacao simulacao = new Simulacao(rs.getLong("idSimulacao"), rs.getFloat("valor"), rs.getLong("Usuarios_idUsuarios"), rs.getDate("data"));
+        Simulacao simulacao = new Simulacao(rs.getLong("idSimulacao"), rs.getFloat("valor"), rs.getLong("Usuarios_idUsuarios"), rs.getString("date"), rs.getDouble("tempoDeUso"), rs.getString(("nome")));
         simulacoes.add(simulacao);
       }
 
@@ -73,7 +75,7 @@ public class SimulacaoRepository {
         simulacao.setIdSimulacao(rs.getLong("idSimulacao"));
         simulacao.setValor(rs.getFloat("valor"));
         simulacao.setIdUsuarios(rs.getLong("Usuarios_idUsuarios"));
-        simulacao.setDate(rs.getDate("data"));
+        simulacao.setDate(rs.getString("date"));
         return simulacao;
       }
     }
@@ -82,9 +84,9 @@ public class SimulacaoRepository {
 
   public void updateInfos(Simulacao simulacao) {
     try (Connection conn = dataSource.getConnection()) {
-      PreparedStatement stmt = conn.prepareStatement("UPDATE Simulacao SET valor = ?, data = ? WHERE idSimulacao = ?");
+      PreparedStatement stmt = conn.prepareStatement("UPDATE Simulacao SET valor = ?, date = ? WHERE idSimulacao = ?");
       stmt.setFloat(1, simulacao.getValor());
-      stmt.setDate(2, simulacao.getDate());
+      stmt.setString(2, simulacao.getDate());
       stmt.setLong(3, simulacao.getIdSimulacao());
       stmt.executeUpdate();
     } catch (SQLException e) {

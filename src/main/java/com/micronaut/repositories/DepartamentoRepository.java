@@ -71,11 +71,18 @@ public class DepartamentoRepository {
 
   public void delete(Long id) {
     try (Connection conn = dataSource.getConnection()) {
-      PreparedStatement stmt = conn.prepareStatement("DELETE FROM Departamento WHERE idDepartamento = ?;");
-      stmt.setLong(1, id);
-      stmt.executeUpdate();
+      // Excluir as máquinas associadas ao departamento
+      PreparedStatement stmtMachines = conn.prepareStatement("DELETE FROM Maquinas WHERE Departamento_idDepartamento = ?;");
+      stmtMachines.setLong(1, id);
+      stmtMachines.executeUpdate();
+
+      // Excluir o departamento
+      PreparedStatement stmtDepartment = conn.prepareStatement("DELETE FROM Departamento WHERE idDepartamento = ?;");
+      stmtDepartment.setLong(1, id);
+      stmtDepartment.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
+
 }
